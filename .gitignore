@@ -53,11 +53,11 @@ xcuserdata
 
 #.LSOverride#
 
-twxes10/proj.android/libs
-twxes10/proj.android/obj
+twxes10/android/libs
+twxes10/android/obj
 
-twxes10/proj.android/.classpath
-twxes10/proj.android/.project
-twxes10/proj.android/.settings
-twxes10/proj.android/gen
-twxes10/proj.android/bin
+twxes10/android/.classpath
+twxes10/android/.project
+twxes10/android/.settings
+twxes10/android/gen
+twxes10/android/bin
