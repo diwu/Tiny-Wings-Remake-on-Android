@@ -31,6 +31,11 @@ bool HelloWorldLayer::init() {
     setBackground(CCSprite::spriteWithFile("background.png"));
     getBackground()->setPosition(ccp(screenW/2, screenH/2));
     
+    getBackground()->setScaleX(screenW/getBackground()->getTextureRect().size.width);
+    getBackground()->setScaleY(screenH/getBackground()->getTextureRect().size.height);
+    
+    //CCLog("sw = %f, sh = %f, bw = %f, bh = %f", screenW, screenH, getBackground()->getTextureRect().size.width, getBackground()->getTextureRect().size.height);
+    
     addChild(getBackground());
     
     setTerrain(new Terrain());
