@@ -8,7 +8,9 @@ LOCAL_MODULE_FILENAME := libgame
 
 LOCAL_SRC_FILES := helloworld/main.cpp \
                    ../../Classes/AppDelegate.cpp \
-                   ../../Classes/HelloWorldScene.cpp
+                   ../../Classes/HelloWorldScene.cpp \
+                   ../../Classes/HelloWorldLayer.cpp \
+                   ../../Classes/Terrain.cpp
                    
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
 					$(LOCAL_PATH)/../../libs/Box2D                   

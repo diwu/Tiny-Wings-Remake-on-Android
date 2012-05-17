@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		102EC0D31564802300D88E3B /* HelloWorldLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 102EC0D21564802300D88E3B /* HelloWorldLayer.cpp */; };
+		102EC0D615648D2800D88E3B /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 102EC0D415648D2800D88E3B /* background.png */; };
+		102EC0D715648D2800D88E3B /* stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = 102EC0D515648D2800D88E3B /* stripes.png */; };
+		1033E3781563ACB9003D23A0 /* Terrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1033E3761563ACB9003D23A0 /* Terrain.cpp */; };
 		10F1D3631563A40900BB8123 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10F1D3621563A40900BB8123 /* QuartzCore.framework */; };
 		10F1D3651563A40900BB8123 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10F1D3641563A40900BB8123 /* OpenGLES.framework */; };
 		10F1D3671563A40900BB8123 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10F1D3661563A40900BB8123 /* OpenAL.framework */; };
@@ -189,6 +193,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		102EC0D01564800D00D88E3B /* HelloWorldLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HelloWorldLayer.h; path = Classes/HelloWorldLayer.h; sourceTree = "<group>"; };
+		102EC0D21564802300D88E3B /* HelloWorldLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HelloWorldLayer.cpp; path = Classes/HelloWorldLayer.cpp; sourceTree = "<group>"; };
+		102EC0D415648D2800D88E3B /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background.png; path = Resources/background.png; sourceTree = "<group>"; };
+		102EC0D515648D2800D88E3B /* stripes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = stripes.png; path = Resources/stripes.png; sourceTree = "<group>"; };
+		1033E3761563ACB9003D23A0 /* Terrain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Terrain.cpp; path = Classes/Terrain.cpp; sourceTree = "<group>"; };
+		1033E3771563ACB9003D23A0 /* Terrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Terrain.h; path = Classes/Terrain.h; sourceTree = "<group>"; };
 		10F1D35E1563A40900BB8123 /* twxes10.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = twxes10.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		10F1D3621563A40900BB8123 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		10F1D3641563A40900BB8123 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -627,6 +637,8 @@
 		10F1D3731563A40900BB8123 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				102EC0D415648D2800D88E3B /* background.png */,
+				102EC0D515648D2800D88E3B /* stripes.png */,
 				10F1D3741563A40900BB8123 /* CloseNormal.png */,
 				10F1D3761563A40900BB8123 /* CloseSelected.png */,
 				10F1D3781563A40900BB8123 /* Default.png */,
@@ -1308,10 +1320,14 @@
 		10F1D5A81563A40C00BB8123 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				1033E3761563ACB9003D23A0 /* Terrain.cpp */,
+				1033E3771563ACB9003D23A0 /* Terrain.h */,
 				10F1D5A91563A40C00BB8123 /* AppDelegate.h */,
 				10F1D5AA1563A40C00BB8123 /* AppDelegate.cpp */,
 				10F1D5AC1563A40C00BB8123 /* HelloWorldScene.h */,
 				10F1D5AD1563A40C00BB8123 /* HelloWorldScene.cpp */,
+				102EC0D01564800D00D88E3B /* HelloWorldLayer.h */,
+				102EC0D21564802300D88E3B /* HelloWorldLayer.cpp */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -1378,6 +1394,8 @@
 				10F1D3871563A40900BB8123 /* Icon@2x.png in Resources */,
 				10F1D38A1563A40900BB8123 /* iTunesArtwork in Resources */,
 				10F1D5B01563A40C00BB8123 /* blocks.png in Resources */,
+				102EC0D615648D2800D88E3B /* background.png in Resources */,
+				102EC0D715648D2800D88E3B /* stripes.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1547,6 +1565,8 @@
 				10F1D5A71563A40C00BB8123 /* RootViewController.mm in Sources */,
 				10F1D5AB1563A40C00BB8123 /* AppDelegate.cpp in Sources */,
 				10F1D5AE1563A40C00BB8123 /* HelloWorldScene.cpp in Sources */,
+				1033E3781563ACB9003D23A0 /* Terrain.cpp in Sources */,
+				102EC0D31564802300D88E3B /* HelloWorldLayer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1662,6 +1682,7 @@
 				10F1D5B51563A40C00BB8123 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

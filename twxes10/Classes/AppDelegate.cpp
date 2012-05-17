@@ -10,6 +10,7 @@
 
 #include "cocos2d.h"
 #include "HelloWorldScene.h"
+#include "HelloWorldLayer.h"
 
 USING_NS_CC;
 
@@ -75,6 +76,11 @@ bool AppDelegate::applicationDidFinishLaunching()
 {
 	// initialize director
 	CCDirector *pDirector = CCDirector::sharedDirector();
+    
+    if (! pDirector->setDirectorType(kCCDirectorTypeDisplayLink)) {
+        pDirector->setDirectorType(kCCDirectorTypeDefault);
+    }
+
     pDirector->setOpenGLView(&CCEGLView::sharedOpenGLView());
 
     // enable High Resource Mode(2x, such as iphone4) and maintains low resource on other devices.
@@ -89,11 +95,17 @@ bool AppDelegate::applicationDidFinishLaunching()
 	// set FPS. the default value is 1.0/60 if you don't call this
 	pDirector->setAnimationInterval(1.0 / 60);
 
+    CCTexture2D::setDefaultAlphaPixelFormat(kCCTexture2DPixelFormat_RGBA8888);
+    
+    /*
 	// create a scene. it's an autorelease object
 	CCScene *pScene = HelloWorld::scene();
 
 	// run
 	pDirector->runWithScene(pScene);
+     */
+    
+    pDirector->runWithScene(HelloWorldLayer::scene());
 
 	return true;
 }
