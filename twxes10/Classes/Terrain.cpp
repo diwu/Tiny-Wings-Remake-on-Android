@@ -54,7 +54,11 @@ void Terrain::update(ccTime dt) {
 			vel = maxVel;
 		}
 		offsetX += vel;
-		float maxOffsetX = hillKeyPoints[nHillKeyPoints-1].x-480;
+        
+        CCSize winSize = CCDirector::sharedDirector()->getWinSize();
+        float scaleRatio = winSize.width/480.0f;
+        
+		float maxOffsetX = hillKeyPoints[nHillKeyPoints-1].x-480*scaleRatio;
 		if(offsetX > maxOffsetX) {
 			offsetX = maxOffsetX;
 			scrolling = false;
@@ -161,7 +165,6 @@ void Terrain::generateHills() {
     
     CCSize winSize = CCDirector::sharedDirector()->getWinSize();
     float scaleRatio = winSize.height/320.0f;
-    CCLog("ratio = %f", scaleRatio);
     
 	float x = 0, y = 120*scaleRatio, dy, ny;
 	float sign = -1;
