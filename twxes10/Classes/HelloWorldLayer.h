@@ -33,6 +33,7 @@ public:
     void registerWithTouchDispatcher();
     bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent);
 
+    CCSprite * generateBackground();
 };
 
 #endif

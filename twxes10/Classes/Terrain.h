@@ -43,6 +43,7 @@ private:
     void generateHills();
     void updateHillVisibleVertices();
     void offsetChanged();
+    void generateStripes();
 };
 
 #endif
