@@ -92,7 +92,7 @@ void Terrain::update(ccTime dt) {
         CCSize winSize = CCDirector::sharedDirector()->getWinSize();
         float scaleRatio = winSize.width/480.0f;
         
-		//float maxOffsetX = hillKeyPoints[nHillKeyPoints-1].x-480*scaleRatio;
+		float maxOffsetX = hillKeyPoints[nHillKeyPoints-1].x-480*scaleRatio;
         //float maxOffsetX = hillKeyPoints[nHillKeyPoints-1].x-480;
 
         if(offsetX > maxOffsetX) {
@@ -237,7 +237,8 @@ void Terrain::updateHillVertices() {
 	while (hillKeyPoints[fromKeyPointI+1].x < offsetX) {
 		fromKeyPointI++;
 	}
-	while (hillKeyPoints[toKeyPointI].x < offsetX+480) {
+    CCSize winSize = CCDirector::sharedDirector()->getWinSize();
+	while (hillKeyPoints[toKeyPointI].x < offsetX+winSize.width) {
 		toKeyPointI++;
 	}
     
