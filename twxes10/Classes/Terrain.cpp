@@ -121,7 +121,7 @@ void Terrain::updateHillVisibleVertices() {
 	float padding = 20;
 	for (int i=0; i<nHillVertices; i++) {
 		p = hillVertices[i];
-		if(p.x > offsetX-padding && p.x < offsetX+480+padding) {
+		if(p.x > offsetX-padding && p.x < offsetX+CCDirector::sharedDirector()->getWinSize().width+padding) {
 			hillVisibleVertices[nHillVisibleVertices] = p;
 			hillVisibleTexCoords[nHillVisibleVertices++] = hillTexCoords[i];
 		}
