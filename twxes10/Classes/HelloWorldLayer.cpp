@@ -20,18 +20,19 @@ CCScene * HelloWorldLayer::scene() {
 
 CCSprite * HelloWorldLayer::generateBackground() {
 	
-	CCSize textureSize = CCSizeMake(screenW, screenH);
+	//CCSize textureSize = CCSizeMake(screenW, screenH);
+    int textureSize = 512;
     
 	ccColor3B c = (ccColor3B){140,205,221};
 	
     //CCRenderTexture *rt = [CCRenderTexture renderTextureWithWidth:textureSize.width height:textureSize.height];
-    CCRenderTexture * rt = CCRenderTexture::renderTextureWithWidthAndHeight(textureSize.width, textureSize.height);
+    CCRenderTexture * rt = CCRenderTexture::renderTextureWithWidthAndHeight(textureSize, textureSize);
     //[rt beginWithClear:(float)c.r/256.0f g:(float)c.g/256.0f b:(float)c.b/256.0f a:1];
     rt->beginWithClear((float)c.r/256.0f, (float)c.g/256.0f, (float)c.b/256.0f, 1);
     
 	// layer 1: gradient
     
-	float gradientAlpha = 0.2f;
+	float gradientAlpha = 0.5f;
     
 	glDisable(GL_TEXTURE_2D);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -42,11 +43,11 @@ CCSprite * HelloWorldLayer::generateBackground() {
 	
 	vertices[nVertices] = CCPointMake(0, 0);
 	colors[nVertices++] = (ccColor4F){0, 0, 0, gradientAlpha};
-	vertices[nVertices] = CCPointMake(textureSize.width, 0);
+	vertices[nVertices] = CCPointMake(textureSize, 0);
 	colors[nVertices++] = (ccColor4F){0, 0, 0, gradientAlpha};
-	vertices[nVertices] = CCPointMake(0, textureSize.height);
+	vertices[nVertices] = CCPointMake(0, textureSize/2);
 	colors[nVertices++] = (ccColor4F){0, 0, 0, 0};
-	vertices[nVertices] = CCPointMake(textureSize.width, textureSize.height);
+	vertices[nVertices] = CCPointMake(textureSize, textureSize/2);
 	colors[nVertices++] = (ccColor4F){0, 0, 0, 0};
 	
     glVertexPointer(2, GL_FLOAT, 0, vertices);
@@ -62,13 +63,13 @@ CCSprite * HelloWorldLayer::generateBackground() {
     CCSprite *s = CCSprite::spriteWithFile("noise.png");
     
     CCSize winSize = CCDirector::sharedDirector()->getWinSize();
-    s->setScaleX(winSize.width/s->getContentSize().width);
-    s->setScaleY(winSize.height/s->getContentSize().height);
+    //s->setScaleX(winSize.width/s->getContentSize().width);
+    //s->setScaleY(winSize.height/s->getContentSize().height);
 
 	//[s setBlendFunc:(ccBlendFunc){GL_DST_COLOR, GL_ZERO}];
     s->setBlendFunc((ccBlendFunc){GL_DST_COLOR, GL_ZERO});
 	//s.position = ccp(textureSize.width/2, textureSize.height/2);
-    s->setPosition(ccp(textureSize.width/2, textureSize.height/2));
+    s->setPosition(ccp(textureSize/2, textureSize/2));
     glColor4f(1,1,1,1);
 	//[s visit];
 	s->visit();
@@ -97,6 +98,8 @@ bool HelloWorldLayer::init() {
     
     //CCLog("sw = %f, sh = %f, bw = %f, bh = %f", screenW, screenH, getBackground()->getTextureRect().size.width, getBackground()->getTextureRect().size.height);
     
+    ccTexParams tp = {GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT};
+    getBackground()->getTexture()->setTexParameters(&tp);
     addChild(getBackground());
     
     setTerrain(new Terrain());
@@ -105,6 +108,8 @@ bool HelloWorldLayer::init() {
     addChild(getTerrain());
     
     setIsTouchEnabled(true);
+    
+    scheduleUpdate();
 
     return true;
 }
@@ -132,3 +137,8 @@ bool HelloWorldLayer::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent) {
     return true;
 }
 
+void HelloWorldLayer::update(ccTime dt) {
+    CCSize size = getBackground()->getTextureRect().size;
+    //background_.textureRect = CGRectMake(terrain_.offsetX*0.2f, 0, size.width, size.height);
+    getBackground()->setTextureRect(CCRectMake(getTerrain()->getOffsetX()*0.2f, 0, size.width, size.height));
+}

@@ -12,8 +12,9 @@
 #include "cocos2d.h"
 
 #define kMaxHillKeyPoints 100
-#define kMaxHillVertices 1000000
-#define kMaxHillVisibleVertices 10000
+#define kMaxHillVertices 2000
+#define kHillSegmentWidth 3
+#define kMaxBorderVertices 400
 
 using namespace cocos2d;
 
@@ -21,18 +22,21 @@ class Terrain : public cocos2d::CCNode {
     
     CCPoint hillKeyPoints[kMaxHillKeyPoints];
 	int nHillKeyPoints;
+    int fromKeyPointI;
+	int toKeyPointI;
 	CCPoint hillVertices[kMaxHillVertices];
 	CCPoint hillTexCoords[kMaxHillVertices];
 	int nHillVertices;
-	CCPoint hillVisibleVertices[kMaxHillVisibleVertices];
-	CCPoint hillVisibleTexCoords[kMaxHillVisibleVertices];
-	int nHillVisibleVertices;
+    
+    CCPoint borderVertices[kMaxBorderVertices];
+	int nBorderVertices;
 	//CCSprite *stripes_;
 	bool scrolling;
-	float offsetX;
+	//float offsetX;
     
 public:
     CC_SYNTHESIZE_RETAIN(CCSprite *, stripes, Stripes);
+    CC_SYNTHESIZE_READONLY(float, offsetX, OffsetX);
     bool init(void);
     ~Terrain();
     void draw(void);
@@ -41,7 +45,7 @@ public:
     
 private:
     void generateHills();
-    void updateHillVisibleVertices();
+    void updateHillVertices();
     void offsetChanged();
     void generateStripes();
 };

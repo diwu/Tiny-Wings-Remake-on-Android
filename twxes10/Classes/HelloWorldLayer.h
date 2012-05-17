@@ -34,6 +34,8 @@ public:
     bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent);
 
     CCSprite * generateBackground();
+    
+    void update(ccTime dt);
 };
 
 #endif
