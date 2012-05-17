@@ -158,17 +158,24 @@ void Terrain::generateHills() {
 	srand(5);
 	nHillKeyPoints = kMaxHillKeyPoints;
     //	nHillKeyPoints = 5;
-	float x = 0, y = 120, dy, ny;
+    
+    CCSize winSize = CCDirector::sharedDirector()->getWinSize();
+    float scaleRatio = winSize.height/320.0f;
+    CCLog("ratio = %f", scaleRatio);
+    
+	float x = 0, y = 120*scaleRatio, dy, ny;
 	float sign = -1;
 	float paddingTop = 100;
 	float paddingBottom = 20;
+    
 	for (int i=0; i<nHillKeyPoints; i++) {
 		hillKeyPoints[i] = CCPointMake(x, y);
 		x += rand()%40+160;
 		while(true) {
 			dy = rand()%80+40;
+            dy = dy * scaleRatio;
 			ny = y + dy*sign;
-			if(ny < 320-paddingTop && ny > paddingBottom) break;
+			if(ny < (320-paddingTop)*scaleRatio && ny > paddingBottom * scaleRatio) break;
 		}
 		y = ny;
 		sign *= -1;
