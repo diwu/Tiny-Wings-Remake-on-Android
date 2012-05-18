@@ -11,7 +11,7 @@
 void GameLayer::createBox2DWorld() {
 	
 	b2Vec2 gravity;
-	gravity.Set(0.0f, -9.8f);
+	gravity.Set(0.0f, -7.0f);
 	
 	world = new b2World(gravity);
 	world->SetContinuousPhysics(true);
@@ -173,6 +173,7 @@ void GameLayer::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent) {
 
 void GameLayer::update(ccTime dt) {
     
+    /*
     if (tapDown) {
 		hero->run();
 	} else {
@@ -185,9 +186,35 @@ void GameLayer::update(ccTime dt) {
 	world->Step(dt, velocityIterations, positionIterations);
 	
 	hero->updatePosition();
+     */
+    
+    if (tapDown) {
+        if ( ! hero->getAwake()) {
+            hero->wake();
+            tapDown = false;
+        } else {
+            hero->dive();
+        }
+    }
+    
+    hero->limitVelocity();
     
 	//terrain->offsetX = hero->position.x - screenW/4;
-    terrain->setOffsetX(hero->getPosition().x - screenW/4);
+    //terrain->setOffsetX(hero->getPosition().x - screenW/4);
+    
+    int32 velocityIterations = 2;
+    int32 positionIterations = 1;
+    world->Step(dt, velocityIterations, positionIterations);
+    world->ClearForces();
+    
+    hero->updateNodePosition();
+    
+    float scale = (screenH*4/5) / hero->getPosition().y;
+    if (scale > 1) scale = 1;
+    terrain->setScale(scale);
+    
+    //terrain_.offsetX = hero_.position.x;
+    terrain->setOffsetX(hero->getPosition().x);
     
     CCSize size = getBackground()->getTextureRect().size;
     //background_.textureRect = CGRectMake(terrain_.offsetX*0.2f, 0, size.width, size.height);

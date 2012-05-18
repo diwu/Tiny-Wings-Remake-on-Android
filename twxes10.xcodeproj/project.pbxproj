@@ -11,6 +11,7 @@
 		102EC0D615648D2800D88E3B /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 102EC0D415648D2800D88E3B /* background.png */; };
 		102EC0D715648D2800D88E3B /* stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = 102EC0D515648D2800D88E3B /* stripes.png */; };
 		1033E3781563ACB9003D23A0 /* Terrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1033E3761563ACB9003D23A0 /* Terrain.cpp */; };
+		103BF752156653F900C1DCE1 /* hero.png in Resources */ = {isa = PBXBuildFile; fileRef = 103BF751156653F900C1DCE1 /* hero.png */; };
 		1047C36D1564A814008F6AEC /* noise.png in Resources */ = {isa = PBXBuildFile; fileRef = 1047C36C1564A814008F6AEC /* noise.png */; };
 		10DE4BE01564FFFF00D9CD00 /* Hero.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10DE4BDF1564FFFF00D9CD00 /* Hero.cpp */; };
 		10F1D3631563A40900BB8123 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10F1D3621563A40900BB8123 /* QuartzCore.framework */; };
@@ -195,12 +196,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		102EC0D01564800D00D88E3B /* GameLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; name = GameLayer.h; path = Classes/GameLayer.h; sourceTree = "<group>"; };
+		102EC0D01564800D00D88E3B /* GameLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameLayer.h; path = Classes/GameLayer.h; sourceTree = "<group>"; };
 		102EC0D21564802300D88E3B /* GameLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameLayer.cpp; path = Classes/GameLayer.cpp; sourceTree = "<group>"; };
 		102EC0D415648D2800D88E3B /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background.png; path = Resources/background.png; sourceTree = "<group>"; };
 		102EC0D515648D2800D88E3B /* stripes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = stripes.png; path = Resources/stripes.png; sourceTree = "<group>"; };
 		1033E3761563ACB9003D23A0 /* Terrain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Terrain.cpp; path = Classes/Terrain.cpp; sourceTree = "<group>"; };
 		1033E3771563ACB9003D23A0 /* Terrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Terrain.h; path = Classes/Terrain.h; sourceTree = "<group>"; };
+		103BF751156653F900C1DCE1 /* hero.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hero.png; path = Resources/hero.png; sourceTree = "<group>"; };
 		1047C36C1564A814008F6AEC /* noise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = noise.png; path = Resources/noise.png; sourceTree = "<group>"; };
 		10DE4BDD1564FFEF00D9CD00 /* Hero.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Hero.h; path = Classes/Hero.h; sourceTree = "<group>"; };
 		10DE4BDF1564FFFF00D9CD00 /* Hero.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Hero.cpp; path = Classes/Hero.cpp; sourceTree = "<group>"; };
@@ -642,6 +644,7 @@
 		10F1D3731563A40900BB8123 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				103BF751156653F900C1DCE1 /* hero.png */,
 				1047C36C1564A814008F6AEC /* noise.png */,
 				102EC0D415648D2800D88E3B /* background.png */,
 				102EC0D515648D2800D88E3B /* stripes.png */,
@@ -1405,6 +1408,7 @@
 				102EC0D615648D2800D88E3B /* background.png in Resources */,
 				102EC0D715648D2800D88E3B /* stripes.png in Resources */,
 				1047C36D1564A814008F6AEC /* noise.png in Resources */,
+				103BF752156653F900C1DCE1 /* hero.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

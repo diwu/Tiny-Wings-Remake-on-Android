@@ -14,7 +14,7 @@
 
 using namespace cocos2d;
 
-class Hero : public CCNode {
+class Hero : public CCSprite {
     
 public:
     b2World *world;
@@ -24,11 +24,15 @@ public:
     static Hero * heroWithWorld(b2World * w);
     bool initWithWorld(b2World * w);
     
-    void updatePosition();
-    void walk();
-    void run();
+    void sleep();
+    void wake();
+    void dive();
+    void limitVelocity();
+    void updateNodePosition();
     
-    void draw();
+    //void draw();
+    
+    CC_SYNTHESIZE_READONLY(bool, awake, Awake);
 };
 
 #endif

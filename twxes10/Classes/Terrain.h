@@ -12,7 +12,7 @@
 #include "cocos2d.h"
 #include "Box2D.h"
 
-#define kMaxHillKeyPoints 100
+#define kMaxHillKeyPoints 1000
 #define kMaxHillVertices 2000
 #define kHillSegmentWidth 10
 #define kMaxBorderVertices 400
@@ -38,6 +38,7 @@ class Terrain : public cocos2d::CCNode {
     b2World *world;
     b2Body *body;
     int screenW;
+    int screenH;
     
 protected: float offsetX;
 public: virtual float getOffsetX(void) const { return offsetX; }
@@ -51,7 +52,7 @@ public:
     ~Terrain();
     void draw(void);
     void toggleScrolling();
-    void update(ccTime dt);
+    //void update(ccTime dt);
     
     static Terrain * terrainWithWorld(b2World* w);
     bool initWithWorld(b2World* w);
