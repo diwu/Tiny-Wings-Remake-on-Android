@@ -1,14 +1,14 @@
 //
-//  HelloWorldLayer.cpp
+//  GameLayer.cpp
 //  twxes10
 //
 //  Created by diwwu on 5/17/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#include "HelloWorldLayer.h"
+#include "GameLayer.h"
 
-void HelloWorldLayer::createBox2DWorld() {
+void GameLayer::createBox2DWorld() {
 	
 	b2Vec2 gravity;
 	gravity.Set(0.0f, -9.8f);
@@ -25,17 +25,17 @@ void HelloWorldLayer::createBox2DWorld() {
 	
 }
 
-CCScene * HelloWorldLayer::scene() {
+CCScene * GameLayer::scene() {
     CCScene *scene = CCScene::node();
     
-    HelloWorldLayer *layer = HelloWorldLayer::node();
+    GameLayer *layer = GameLayer::node();
     
     scene->addChild(layer);
     
     return scene;
 }
 
-CCSprite * HelloWorldLayer::generateBackground() {
+CCSprite * GameLayer::generateBackground() {
 	
 	//CCSize textureSize = CCSizeMake(screenW, screenH);
     int textureSize = 512;
@@ -97,7 +97,7 @@ CCSprite * HelloWorldLayer::generateBackground() {
     return CCSprite::spriteWithTexture(rt->getSprite()->getTexture());
 }
 
-bool HelloWorldLayer::init() {
+bool GameLayer::init() {
     
     CCLayer::init();
     
@@ -137,7 +137,7 @@ bool HelloWorldLayer::init() {
     return true;
 }
 
-HelloWorldLayer::~HelloWorldLayer() {
+GameLayer::~GameLayer() {
     
     delete world;
     world = NULL;
@@ -150,11 +150,11 @@ HelloWorldLayer::~HelloWorldLayer() {
     
 }
 
-void HelloWorldLayer::registerWithTouchDispatcher() {
+void GameLayer::registerWithTouchDispatcher() {
     CCTouchDispatcher::sharedDispatcher()->addTargetedDelegate(this, 0, true);
 }
 
-bool HelloWorldLayer::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent) {
+bool GameLayer::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent) {
     CCPoint location = pTouch->locationInView();
     location = CCDirector::sharedDirector()->convertToGL(location);
     
@@ -164,14 +164,14 @@ bool HelloWorldLayer::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent) {
     return true;
 }
 
-void HelloWorldLayer::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent) {
+void GameLayer::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent) {
     CCPoint location = pTouch->locationInView();
     location = CCDirector::sharedDirector()->convertToGL(location);
     
     tapDown = false;
 }
 
-void HelloWorldLayer::update(ccTime dt) {
+void GameLayer::update(ccTime dt) {
     
     if (tapDown) {
 		hero->run();

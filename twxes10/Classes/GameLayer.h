@@ -1,13 +1,13 @@
 //
-//  HelloWorldLayer.h
+//  GameLayer.h
 //  twxes10
 //
 //  Created by diwwu on 5/17/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#ifndef twxes10_HelloWorldLayer_h
-#define twxes10_HelloWorldLayer_h
+#ifndef twxes10_GameLayer_h
+#define twxes10_GameLayer_h
 
 #include "Terrain.h"
 #include "cocos2d.h"
@@ -16,7 +16,7 @@
 
 using namespace cocos2d;
 
-class HelloWorldLayer : public CCLayer {
+class GameLayer : public CCLayer {
     
 public:
     
@@ -29,12 +29,12 @@ public:
     
     CC_SYNTHESIZE_RETAIN(CCSprite *, background, Background);
     CC_SYNTHESIZE_RETAIN(Terrain *, terrain, Terrain);
-    LAYER_NODE_FUNC(HelloWorldLayer);
+    LAYER_NODE_FUNC(GameLayer);
     static CCScene * scene();
     
     bool init();
     
-    ~HelloWorldLayer();
+    ~GameLayer();
     
     void registerWithTouchDispatcher();
     bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent);

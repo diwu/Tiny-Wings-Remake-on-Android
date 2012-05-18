@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		102EC0D31564802300D88E3B /* HelloWorldLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 102EC0D21564802300D88E3B /* HelloWorldLayer.cpp */; };
+		102EC0D31564802300D88E3B /* GameLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 102EC0D21564802300D88E3B /* GameLayer.cpp */; };
 		102EC0D615648D2800D88E3B /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 102EC0D415648D2800D88E3B /* background.png */; };
 		102EC0D715648D2800D88E3B /* stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = 102EC0D515648D2800D88E3B /* stripes.png */; };
 		1033E3781563ACB9003D23A0 /* Terrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1033E3761563ACB9003D23A0 /* Terrain.cpp */; };
@@ -195,8 +195,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		102EC0D01564800D00D88E3B /* HelloWorldLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HelloWorldLayer.h; path = Classes/HelloWorldLayer.h; sourceTree = "<group>"; };
-		102EC0D21564802300D88E3B /* HelloWorldLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HelloWorldLayer.cpp; path = Classes/HelloWorldLayer.cpp; sourceTree = "<group>"; };
+		102EC0D01564800D00D88E3B /* GameLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; name = GameLayer.h; path = Classes/GameLayer.h; sourceTree = "<group>"; };
+		102EC0D21564802300D88E3B /* GameLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameLayer.cpp; path = Classes/GameLayer.cpp; sourceTree = "<group>"; };
 		102EC0D415648D2800D88E3B /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background.png; path = Resources/background.png; sourceTree = "<group>"; };
 		102EC0D515648D2800D88E3B /* stripes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = stripes.png; path = Resources/stripes.png; sourceTree = "<group>"; };
 		1033E3761563ACB9003D23A0 /* Terrain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Terrain.cpp; path = Classes/Terrain.cpp; sourceTree = "<group>"; };
@@ -1332,8 +1332,8 @@
 				10F1D5AA1563A40C00BB8123 /* AppDelegate.cpp */,
 				10F1D5AC1563A40C00BB8123 /* HelloWorldScene.h */,
 				10F1D5AD1563A40C00BB8123 /* HelloWorldScene.cpp */,
-				102EC0D01564800D00D88E3B /* HelloWorldLayer.h */,
-				102EC0D21564802300D88E3B /* HelloWorldLayer.cpp */,
+				102EC0D01564800D00D88E3B /* GameLayer.h */,
+				102EC0D21564802300D88E3B /* GameLayer.cpp */,
 				10DE4BDD1564FFEF00D9CD00 /* Hero.h */,
 				10DE4BDF1564FFFF00D9CD00 /* Hero.cpp */,
 			);
@@ -1575,7 +1575,7 @@
 				10F1D5AB1563A40C00BB8123 /* AppDelegate.cpp in Sources */,
 				10F1D5AE1563A40C00BB8123 /* HelloWorldScene.cpp in Sources */,
 				1033E3781563ACB9003D23A0 /* Terrain.cpp in Sources */,
-				102EC0D31564802300D88E3B /* HelloWorldLayer.cpp in Sources */,
+				102EC0D31564802300D88E3B /* GameLayer.cpp in Sources */,
 				10DE4BE01564FFFF00D9CD00 /* Hero.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -10,7 +10,7 @@
 
 #include "cocos2d.h"
 #include "HelloWorldScene.h"
-#include "HelloWorldLayer.h"
+#include "GameLayer.h"
 
 USING_NS_CC;
 
@@ -107,7 +107,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 	pDirector->runWithScene(pScene);
      */
     
-    pDirector->runWithScene(HelloWorldLayer::scene());
+    pDirector->runWithScene(GameLayer::scene());
 
 	return true;
 }
