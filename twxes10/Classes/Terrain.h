@@ -10,10 +10,11 @@
 #define twx_Terrain_h
 
 #include "cocos2d.h"
+#include "Box2D.h"
 
 #define kMaxHillKeyPoints 100
 #define kMaxHillVertices 2000
-#define kHillSegmentWidth 3
+#define kHillSegmentWidth 10
 #define kMaxBorderVertices 400
 
 using namespace cocos2d;
@@ -34,19 +35,31 @@ class Terrain : public cocos2d::CCNode {
 	bool scrolling;
 	//float offsetX;
     
+    b2World *world;
+    b2Body *body;
+    int screenW;
+    
+protected: float offsetX;
+public: virtual float getOffsetX(void) const { return offsetX; }
+public: virtual void setOffsetX(float var);
+    
 public:
     CC_SYNTHESIZE_RETAIN(CCSprite *, stripes, Stripes);
-    CC_SYNTHESIZE_READONLY(float, offsetX, OffsetX);
-    bool init(void);
+    //CC_SYNTHESIZE(float, offsetX, OffsetX);
+    
+    //bool init(void);
     ~Terrain();
     void draw(void);
     void toggleScrolling();
     void update(ccTime dt);
     
+    static Terrain * terrainWithWorld(b2World* w);
+    bool initWithWorld(b2World* w);
+    
 private:
     void generateHills();
-    void updateHillVertices();
-    void offsetChanged();
+    void resetHillVertices();
+    void resetBox2DBody();
     void generateStripes();
 };
 

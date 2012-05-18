@@ -12,6 +12,7 @@
 		102EC0D715648D2800D88E3B /* stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = 102EC0D515648D2800D88E3B /* stripes.png */; };
 		1033E3781563ACB9003D23A0 /* Terrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1033E3761563ACB9003D23A0 /* Terrain.cpp */; };
 		1047C36D1564A814008F6AEC /* noise.png in Resources */ = {isa = PBXBuildFile; fileRef = 1047C36C1564A814008F6AEC /* noise.png */; };
+		10DE4BE01564FFFF00D9CD00 /* Hero.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10DE4BDF1564FFFF00D9CD00 /* Hero.cpp */; };
 		10F1D3631563A40900BB8123 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10F1D3621563A40900BB8123 /* QuartzCore.framework */; };
 		10F1D3651563A40900BB8123 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10F1D3641563A40900BB8123 /* OpenGLES.framework */; };
 		10F1D3671563A40900BB8123 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10F1D3661563A40900BB8123 /* OpenAL.framework */; };
@@ -201,6 +202,8 @@
 		1033E3761563ACB9003D23A0 /* Terrain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Terrain.cpp; path = Classes/Terrain.cpp; sourceTree = "<group>"; };
 		1033E3771563ACB9003D23A0 /* Terrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Terrain.h; path = Classes/Terrain.h; sourceTree = "<group>"; };
 		1047C36C1564A814008F6AEC /* noise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = noise.png; path = Resources/noise.png; sourceTree = "<group>"; };
+		10DE4BDD1564FFEF00D9CD00 /* Hero.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Hero.h; path = Classes/Hero.h; sourceTree = "<group>"; };
+		10DE4BDF1564FFFF00D9CD00 /* Hero.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Hero.cpp; path = Classes/Hero.cpp; sourceTree = "<group>"; };
 		10F1D35E1563A40900BB8123 /* twxes10.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = twxes10.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		10F1D3621563A40900BB8123 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		10F1D3641563A40900BB8123 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -1331,6 +1334,8 @@
 				10F1D5AD1563A40C00BB8123 /* HelloWorldScene.cpp */,
 				102EC0D01564800D00D88E3B /* HelloWorldLayer.h */,
 				102EC0D21564802300D88E3B /* HelloWorldLayer.cpp */,
+				10DE4BDD1564FFEF00D9CD00 /* Hero.h */,
+				10DE4BDF1564FFFF00D9CD00 /* Hero.cpp */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -1571,6 +1576,7 @@
 				10F1D5AE1563A40C00BB8123 /* HelloWorldScene.cpp in Sources */,
 				1033E3781563ACB9003D23A0 /* Terrain.cpp in Sources */,
 				102EC0D31564802300D88E3B /* HelloWorldLayer.cpp in Sources */,
+				10DE4BE01564FFFF00D9CD00 /* Hero.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

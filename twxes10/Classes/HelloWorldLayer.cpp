@@ -8,6 +8,23 @@
 
 #include "HelloWorldLayer.h"
 
+void HelloWorldLayer::createBox2DWorld() {
+	
+	b2Vec2 gravity;
+	gravity.Set(0.0f, -9.8f);
+	
+	world = new b2World(gravity);
+	world->SetContinuousPhysics(true);
+	
+    //	debugDraw = new GLESDebugDraw(PTM_RATIO);
+    //	world->SetDebugDraw(debugDraw);
+	
+    //	uint32 flags = 0;
+    //	flags += b2DebugDraw::e_shapeBit;
+    //	debugDraw->SetFlags(flags);
+	
+}
+
 CCScene * HelloWorldLayer::scene() {
     CCScene *scene = CCScene::node();
     
@@ -89,6 +106,8 @@ bool HelloWorldLayer::init() {
     screenW = size.width;
     screenH = size.height;
     
+    createBox2DWorld();
+    
     //setBackground(CCSprite::spriteWithFile("background.png"));
     setBackground(generateBackground());
     getBackground()->setPosition(ccp(screenW/2, screenH/2));
@@ -102,12 +121,16 @@ bool HelloWorldLayer::init() {
     getBackground()->getTexture()->setTexParameters(&tp);
     addChild(getBackground());
     
-    setTerrain(new Terrain());
-    getTerrain()->init();
+    setTerrain(Terrain::terrainWithWorld(world));
     
     addChild(getTerrain());
     
+    setHero(Hero::heroWithWorld(world));
+    addChild(getHero());
+    
     setIsTouchEnabled(true);
+    
+    tapDown = false;
     
     scheduleUpdate();
 
@@ -115,6 +138,9 @@ bool HelloWorldLayer::init() {
 }
 
 HelloWorldLayer::~HelloWorldLayer() {
+    
+    delete world;
+    world = NULL;
     
     getBackground()->release();
     getTerrain()->release();
@@ -132,12 +158,40 @@ bool HelloWorldLayer::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent) {
     CCPoint location = pTouch->locationInView();
     location = CCDirector::sharedDirector()->convertToGL(location);
     
-    getTerrain()->toggleScrolling();
+    //getTerrain()->toggleScrolling();
+    tapDown = true;
     
     return true;
 }
 
+void HelloWorldLayer::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent) {
+    CCPoint location = pTouch->locationInView();
+    location = CCDirector::sharedDirector()->convertToGL(location);
+    
+    tapDown = false;
+}
+
 void HelloWorldLayer::update(ccTime dt) {
+    
+    if (tapDown) {
+		hero->run();
+	} else {
+		hero->walk();
+	}
+	
+	int32 velocityIterations = 8;
+	int32 positionIterations = 1;
+	
+	world->Step(dt, velocityIterations, positionIterations);
+	
+	hero->updatePosition();
+    
+    
+    CCLog(" - hero - x = %f", hero->getPosition().x);
+    
+	//terrain->offsetX = hero->position.x - screenW/4;
+    terrain->setOffsetX(hero->getPosition().x - screenW/4);
+    
     CCSize size = getBackground()->getTextureRect().size;
     //background_.textureRect = CGRectMake(terrain_.offsetX*0.2f, 0, size.width, size.height);
     getBackground()->setTextureRect(CCRectMake(getTerrain()->getOffsetX()*0.2f, 0, size.width, size.height));
