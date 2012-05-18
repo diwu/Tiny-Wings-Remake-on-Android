@@ -126,7 +126,7 @@ bool HelloWorldLayer::init() {
     addChild(getTerrain());
     
     setHero(Hero::heroWithWorld(world));
-    addChild(getHero());
+    getTerrain()->addChild(getHero());
     
     setIsTouchEnabled(true);
     
@@ -185,9 +185,6 @@ void HelloWorldLayer::update(ccTime dt) {
 	world->Step(dt, velocityIterations, positionIterations);
 	
 	hero->updatePosition();
-    
-    
-    CCLog(" - hero - x = %f", hero->getPosition().x);
     
 	//terrain->offsetX = hero->position.x - screenW/4;
     terrain->setOffsetX(hero->getPosition().x - screenW/4);
