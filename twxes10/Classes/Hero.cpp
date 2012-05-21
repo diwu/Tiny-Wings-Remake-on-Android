@@ -10,6 +10,11 @@
 
 #define PTM_RATIO 32 // pixel to metre ratio
 
+Hero::~Hero() {
+    getSprite()->release();
+    setSprite(NULL);
+}
+
 void Hero::createBox2DBody() {
     
     CCSize size = CCDirector::sharedDirector()->getWinSize();
@@ -19,8 +24,8 @@ void Hero::createBox2DBody() {
 
     b2BodyDef bd;
     bd.type = b2_dynamicBody;
-    bd.linearDamping = 0.1f;
-    bd.fixedRotation = true;
+    bd.linearDamping = 0.05f;
+    //bd.fixedRotation = true;
     bd.position.Set(startPosition.x/PTM_RATIO, startPosition.y/PTM_RATIO);
     body = world->CreateBody(&bd);
     
@@ -45,7 +50,10 @@ Hero * Hero::heroWithWorld(b2World * w) {
 
 bool Hero::initWithWorld(b2World * w) {
     
-    initWithFile("hero.png");
+    //initWithFile("hero.png");
+    
+    setSprite(CCSprite::spriteWithFile("hero.png"));
+    addChild(getSprite());
     
     world = w;
     radius = 16.0f;
@@ -126,12 +134,18 @@ void Hero::limitVelocity() {
 }
 
 void Hero::updateNodePosition() {
+    float x = body->GetPosition().x*PTM_RATIO;
+    float y = body->GetPosition().y*PTM_RATIO;
+    if (y < radius) {
+        y = radius;
+    }
     //self.position = ccp(body->GetPosition().x*PTM_RATIO, body->GetPosition().y*PTM_RATIO);
-    setPosition(ccp(body->GetPosition().x*PTM_RATIO, body->GetPosition().y*PTM_RATIO));
+    setPosition(ccp(x, y));
     b2Vec2 vel = body->GetLinearVelocity();
     float angle = atan2f(vel.y, vel.x);
     //self.rotation = -1 * CC_RADIANS_TO_DEGREES(angle);
     setRotation(-1 * CC_RADIANS_TO_DEGREES(angle));
+    //body->SetTransform(body->GetPosition(), angle);
 }
 
 

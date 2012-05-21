@@ -12,10 +12,10 @@
 #include "cocos2d.h"
 #include "Box2D.h"
 
-#define kMaxHillKeyPoints 1000
-#define kMaxHillVertices 2000
-#define kHillSegmentWidth 5
-#define kMaxBorderVertices 400
+#define kMaxHillKeyPoints 200
+#define kMaxHillVertices 1000
+#define kHillSegmentWidth 10
+#define kMaxBorderVertices 5000
 
 using namespace cocos2d;
 
@@ -62,10 +62,13 @@ public:
 private:
     void generateHillKeyPoints();
     void resetHillVertices();
-    void resetBox2DBody();
+    //void resetBox2DBody();
     void generateStripes();
     ccColor3B generateDarkColor();
     ccColor3B generateLightColorFrom(ccColor3B c);
+    
+    void generateBorderVertices();
+    void createBox2DBody();
 
 };
 

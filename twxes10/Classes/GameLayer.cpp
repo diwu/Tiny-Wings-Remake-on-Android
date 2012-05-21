@@ -8,14 +8,27 @@
 
 #include "GameLayer.h"
 
+void GameLayer::draw() {
+    
+    glDisable(GL_TEXTURE_2D);
+    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+    glDisableClientState(GL_COLOR_ARRAY);
+    
+    
+    glEnableClientState(GL_COLOR_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    glEnable(GL_TEXTURE_2D);	
+}
+
 ccColor3B GameLayer::generateDarkColor() {
-    const int maxValue = 100;
-    const int maxSum = 250;
+    const int maxValue = 200;
+    const int minValue = 100;
+    const int maxSum = 350;
     int r, g, b;
     while (true) {
-        r = arc4random()%maxValue;
-        g = arc4random()%maxValue;
-        b = arc4random()%maxValue;
+        r = arc4random()%(maxValue-minValue)+minValue;
+        g = arc4random()%(maxValue-minValue)+minValue;
+        b = arc4random()%(maxValue-minValue)+minValue;
         if (r+g+b > maxSum) break;
     }
     return ccc3(r, g, b);
@@ -24,10 +37,10 @@ ccColor3B GameLayer::generateDarkColor() {
 void GameLayer::createBox2DWorld() {
 	
 	b2Vec2 gravity;
-	gravity.Set(0.0f, -7.0f);
+	gravity.Set(0.0f, -9.8f);
 	
 	world = new b2World(gravity);
-	world->SetContinuousPhysics(true);
+	//world->SetContinuousPhysics(true);
 	
     //	debugDraw = new GLESDebugDraw(PTM_RATIO);
     //	world->SetDebugDraw(debugDraw);
@@ -48,13 +61,13 @@ CCScene * GameLayer::scene() {
     return scene;
 }
 
-CCSprite * GameLayer::generateBackground() {
+void GameLayer::generateBackground() {
 	
 	//CCSize textureSize = CCSizeMake(screenW, screenH);
     int textureSize = 512;
     
-	//ccColor3B c = (ccColor3B){140,205,221};
-	ccColor3B c = generateDarkColor();
+	ccColor3B c = (ccColor3B){140,205,221};
+	//ccColor3B c = generateDarkColor();
     ccColor4F cf = ccc4FFromccc3B(c);
     
     //CCRenderTexture *rt = [CCRenderTexture renderTextureWithWidth:textureSize.width height:textureSize.height];
@@ -64,7 +77,7 @@ CCSprite * GameLayer::generateBackground() {
     
 	// layer 1: gradient
     
-	float gradientAlpha = 0.5f;
+	float gradientAlpha = 0.25f;
     
 	glDisable(GL_TEXTURE_2D);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -73,17 +86,18 @@ CCSprite * GameLayer::generateBackground() {
 	ccColor4F colors[4];
     int nVertices = 0;
 	
-	vertices[nVertices] = CCPointMake(0, 0);
-	colors[nVertices++] = (ccColor4F){0, 0, 0, gradientAlpha};
-	vertices[nVertices] = CCPointMake(textureSize, 0);
-	colors[nVertices++] = (ccColor4F){0, 0, 0, gradientAlpha};
-	vertices[nVertices] = CCPointMake(0, textureSize/2);
-	colors[nVertices++] = (ccColor4F){0, 0, 0, 0};
-	vertices[nVertices] = CCPointMake(textureSize, textureSize/2);
-	colors[nVertices++] = (ccColor4F){0, 0, 0, 0};
+    vertices[nVertices] = ccp(0, 0);
+    colors[nVertices++] = (ccColor4F){1, 1, 1, 0};
+    vertices[nVertices] = ccp(textureSize, 0);
+    colors[nVertices++] = (ccColor4F){1, 1, 1, 0};
+    vertices[nVertices] = ccp(0, textureSize);
+    colors[nVertices++] = (ccColor4F){1, 1, 1, gradientAlpha};
+    vertices[nVertices] = ccp(textureSize, textureSize);
+    colors[nVertices++] = (ccColor4F){1, 1, 1, gradientAlpha};
 	
     glVertexPointer(2, GL_FLOAT, 0, vertices);
 	glColorPointer(4, GL_FLOAT, 0, colors);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)nVertices);
 	
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -109,9 +123,20 @@ CCSprite * GameLayer::generateBackground() {
 	s->visit();
     //[rt end];
     rt->end();
+    
+    //self.background = [CCSprite spriteWithTexture:rt.sprite.texture];
+    setBackground(CCSprite::spriteWithTexture(rt->getSprite()->getTexture()));
+    ccTexParams tp = {GL_NEAREST, GL_NEAREST, GL_REPEAT, GL_REPEAT};
+    //[_background.texture setTexParameters:&tp];
+    getBackground()->getTexture()->setTexParameters(&tp);
+    //_background.position = ccp(screenW/2,screenH/2);
+    getBackground()->setPosition(ccp(screenW/2,screenH/2));
+    //    _background.scale = 0.5f;
 	
 	//return [CCSprite spriteWithTexture:rt.sprite.texture];
-    return CCSprite::spriteWithTexture(rt->getSprite()->getTexture());
+    //return CCSprite::spriteWithTexture(rt->getSprite()->getTexture());
+    
+    addChild(getBackground());
 }
 
 bool GameLayer::init() {
@@ -126,17 +151,19 @@ bool GameLayer::init() {
     createBox2DWorld();
     
     //setBackground(CCSprite::spriteWithFile("background.png"));
-    setBackground(generateBackground());
-    getBackground()->setPosition(ccp(screenW/2, screenH/2));
+    //setBackground(generateBackground());
+    //getBackground()->setPosition(ccp(screenW/2, screenH/2));
     
-    getBackground()->setScaleX(screenW/getBackground()->getTextureRect().size.width);
-    getBackground()->setScaleY(screenH/getBackground()->getTextureRect().size.height);
+    //getBackground()->setScaleX(screenW/getBackground()->getTextureRect().size.width);
+    //getBackground()->setScaleY(screenH/getBackground()->getTextureRect().size.height);
     
     //CCLog("sw = %f, sh = %f, bw = %f, bh = %f", screenW, screenH, getBackground()->getTextureRect().size.width, getBackground()->getTextureRect().size.height);
     
-    ccTexParams tp = {GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT};
-    getBackground()->getTexture()->setTexParameters(&tp);
-    addChild(getBackground());
+    //ccTexParams tp = {GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT};
+    //getBackground()->getTexture()->setTexParameters(&tp);
+    //addChild(getBackground());
+    
+    generateBackground();
     
     setTerrain(Terrain::terrainWithWorld(world));
     
@@ -220,9 +247,9 @@ void GameLayer::update(ccTime dt) {
     //terrain->setOffsetX(hero->getPosition().x - screenW/4);
     
     int32 velocityIterations = 8;
-    int32 positionIterations = 1;
+    int32 positionIterations = 3;
     world->Step(dt, velocityIterations, positionIterations);
-    world->ClearForces();
+    //world->ClearForces();
     
     hero->updateNodePosition();
     

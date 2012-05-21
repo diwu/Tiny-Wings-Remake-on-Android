@@ -22,7 +22,7 @@ Terrain * Terrain::terrainWithWorld(b2World* w) {
 bool Terrain::initWithWorld(b2World* w) {
     
     world = w;
-    body = NULL;
+    //body = NULL;
     
     CCSize size = CCDirector::sharedDirector()->getWinSize();
     screenW = size.width;
@@ -31,10 +31,15 @@ bool Terrain::initWithWorld(b2World* w) {
     //scrolling = false;
     //offsetX = 0;
     
-    textureSize = 256;
+    textureSize = 512;
+    
         
     generateStripes();
     generateHillKeyPoints();
+    
+    generateBorderVertices();
+    createBox2DBody();
+    
     offsetX = 0;
     
     //scheduleUpdate();
@@ -138,7 +143,7 @@ void Terrain::generateStripes() {
 
     // random even number of stripes (2,4,6,etc)
     const int minStripes = 2;
-    const int maxStripes = 8;
+    const int maxStripes = 20;
     int nStripes = arc4random()%(maxStripes-minStripes)+minStripes;
     if (nStripes%2 != 0) {
         nStripes++;
@@ -153,7 +158,7 @@ void Terrain::generateStripes() {
      */
     ccColor3B c1 = generateDarkColor();
     ccColor3B c2 = generateLightColorFrom(c1);
-	float gradientAlpha = 0.5f;
+	//float gradientAlpha = 0.5f;
 	
     //CCRenderTexture *rt = [CCRenderTexture renderTextureWithWidth:textureSize height:textureSize];
     CCRenderTexture *rt = CCRenderTexture::renderTextureWithWidthAndHeight(textureSize, textureSize);
@@ -161,11 +166,7 @@ void Terrain::generateStripes() {
     //rt->beginWithClear(c1.r/256.0f, c1.g/256.0f, c1.b/256.0f, 1);
     ccColor4F c1f = ccc4FFromccc3B(c1);
     rt->beginWithClear(c1f.r, c1f.g, c1f.b, c1f.a);
-
-	glDisable(GL_TEXTURE_2D);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
-	
+    
 	// layer 1: stripes
 	
     //CGPoint vertices[kMaxStripes*6];
@@ -177,16 +178,20 @@ void Terrain::generateStripes() {
     float y2 = 0;
     float dx = textureSize*2 / nStripes;
     float stripeWidth = dx/2;
-    for (int i=0; i<=nStripes; i++) {
+    for (int i=0; i<nStripes; i++) {
         x2 = x1 + textureSize;
-        vertices[nVertices++] = CCPointMake(x1, y1);
-        vertices[nVertices++] = CCPointMake(x1+stripeWidth, y1);
-        vertices[nVertices++] = CCPointMake(x2, y2);
+        vertices[nVertices++] = ccp(x1, y1);
+        vertices[nVertices++] = ccp(x1+stripeWidth, y1);
+        vertices[nVertices++] = ccp(x2, y2);
         vertices[nVertices++] = vertices[nVertices-2];
         vertices[nVertices++] = vertices[nVertices-2];
-        vertices[nVertices++] = CCPointMake(x2+stripeWidth, y2);
+        vertices[nVertices++] = ccp(x2+stripeWidth, y2);
         x1 += dx;
     }
+    
+     glDisable(GL_TEXTURE_2D);
+     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+     glDisableClientState(GL_COLOR_ARRAY);
 	
     glColor4ub(c2.r, c2.g, c2.b, 255);
     glVertexPointer(2, GL_FLOAT, 0, vertices);
@@ -194,6 +199,7 @@ void Terrain::generateStripes() {
 	
 	// layer 2: gradient
 	
+    float gradientAlpha = 0.7f;
 	glEnableClientState(GL_COLOR_ARRAY);
 	
     /*
@@ -210,14 +216,14 @@ void Terrain::generateStripes() {
     colors[nVertices++] = ccc4FFromccc3B(borderColor);
      */
 
-    vertices[nVertices] = CCPointMake(0, 0);
+    vertices[nVertices] = ccp(0, 0);
     colors[nVertices++] = (ccColor4F){0, 0, 0, 0};
-    vertices[nVertices] = CCPointMake(textureSize, 0);
+    vertices[nVertices] = ccp(textureSize, 0);
     colors[nVertices++] = (ccColor4F){0, 0, 0, 0};
     
-    vertices[nVertices] = CCPointMake(0, textureSize);
+    vertices[nVertices] = ccp(0, textureSize);
     colors[nVertices++] = (ccColor4F){0, 0, 0, gradientAlpha};
-    vertices[nVertices] = CCPointMake(textureSize, textureSize);
+    vertices[nVertices] = ccp(textureSize, textureSize);
     colors[nVertices++] = (ccColor4F){0, 0, 0, gradientAlpha};
 	
     glVertexPointer(2, GL_FLOAT, 0, vertices);
@@ -225,24 +231,24 @@ void Terrain::generateStripes() {
     glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)nVertices);
 	
     // layer 3: highlight
-    float borderWidth = textureSize/8;
-    ccColor4F borderColor = (ccColor4F){1, 1, 1, 0.3f};
+    float highlightWidth = textureSize/8;
+    ccColor4F highlightColor = (ccColor4F){1, 1, 1, 0.3f};
 
     nVertices = 0;
     
-    vertices[nVertices] = CCPointMake(0, 0);
-    colors[nVertices++] = borderColor;
-    vertices[nVertices] = CCPointMake(textureSize, 0);
-    colors[nVertices++] = borderColor;
-
-    vertices[nVertices] = CCPointMake(0, borderWidth);
+    vertices[nVertices] = ccp(0, 0);
+    colors[nVertices++] = highlightColor;
+    vertices[nVertices] = ccp(textureSize, 0);
+    colors[nVertices++] = highlightColor;
+    
+    vertices[nVertices] = ccp(0, highlightWidth);
     colors[nVertices++] = (ccColor4F){0, 0, 0, 0};
-    vertices[nVertices] = CCPointMake(textureSize, borderWidth);
+    vertices[nVertices] = ccp(textureSize, highlightWidth);
     colors[nVertices++] = (ccColor4F){0, 0, 0, 0};
     
     glVertexPointer(2, GL_FLOAT, 0, vertices);
     glColorPointer(4, GL_FLOAT, 0, colors);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)nVertices);
     
     
@@ -251,7 +257,24 @@ void Terrain::generateStripes() {
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);	
     
-	// layer 3: noise
+    // layer: top border
+    
+    float borderWidth = 2.0f;
+    ccColor4F borderColor = (ccColor4F){0, 0, 0, 0.5f};
+    
+    nVertices = 0;
+    
+    vertices[nVertices] = ccp(0, borderWidth/2);
+    colors[nVertices++] = borderColor;
+    vertices[nVertices] = ccp(textureSize, borderWidth/2);
+    colors[nVertices++] = borderColor;
+    
+    glLineWidth(borderWidth);
+    glColor4f(borderColor.r, borderColor.g, borderColor.b, borderColor.a);
+    glVertexPointer(2, GL_FLOAT, 0, vertices);
+    glDrawArrays(GL_LINE_STRIP, 0, (GLsizei)nVertices);
+    
+	// layer 4: noise
 	
 	//CCSprite *s = [CCSprite spriteWithFile:@"noise.png"];
     CCSprite *s = CCSprite::spriteWithFile("noise.png");
@@ -271,7 +294,7 @@ void Terrain::generateStripes() {
 	
 	//self.stripes = [CCSprite spriteWithTexture:rt.sprite.texture];
     setStripes(CCSprite::spriteWithTexture(rt->getSprite()->getTexture()));
-	ccTexParams tp = {GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_CLAMP_TO_EDGE};
+	ccTexParams tp = {GL_NEAREST, GL_NEAREST, GL_REPEAT, GL_CLAMP_TO_EDGE};
 	//[stripes_.texture setTexParameters:&tp];
     getStripes()->getTexture()->setTexParameters(&tp);
 }
@@ -326,23 +349,83 @@ void Terrain::generateHillKeyPoints() {
         sign *= -1;
     }
      */
-    while (nHillKeyPoints < kMaxHillKeyPoints) {
+    while (nHillKeyPoints < kMaxHillKeyPoints - 1) {
         dx = rand()%rangeDX+minDX;
         x += dx;
+        /*
         while(true) {
             dy = rand()%rangeDY+minDY;
             ny = y + dy*sign;
             if(ny < screenH-paddingTop && ny > paddingBottom) break;
         }
+         */
+        dy = rand()%rangeDY+minDY;
+        ny = y + dy*sign;
+        if(ny > screenH-paddingTop) ny = screenH-paddingTop;
+        if(ny < paddingBottom) ny = paddingTop;
         y = ny;
         sign *= -1;
         hillKeyPoints[nHillKeyPoints++] = CCPointMake(x, y);
     }
     
+    // cliff
+    x += minDX+rangeDX;
+    y = 0;
+    hillKeyPoints[nHillKeyPoints++] = ccp(x, y);
+    
     fromKeyPointI = 0;
     toKeyPointI = 0;
 	
-	resetHillVertices();
+	//resetHillVertices();
+}
+
+void Terrain::generateBorderVertices() {
+    
+    nBorderVertices = 0;
+    CCPoint p0, p1, pt0, pt1;
+    p0 = hillKeyPoints[0];
+    for (int i=1; i<nHillKeyPoints; i++) {
+        p1 = hillKeyPoints[i];
+        
+        int hSegments = floorf((p1.x-p0.x)/kHillSegmentWidth);
+        float dx = (p1.x - p0.x) / hSegments;
+        float da = M_PI / hSegments;
+        float ymid = (p0.y + p1.y) / 2;
+        float ampl = (p0.y - p1.y) / 2;
+        pt0 = p0;
+        borderVertices[nBorderVertices++] = pt0;
+        for (int j=1; j<hSegments+1; j++) {
+            pt1.x = p0.x + j*dx;
+            pt1.y = ymid + ampl * cosf(da*j);
+            borderVertices[nBorderVertices++] = pt1;
+            pt0 = pt1;
+        }
+        
+        p0 = p1;
+    }
+    //    NSLog(@"nBorderVertices = %d", nBorderVertices);
+}
+
+void Terrain::createBox2DBody() {
+    
+    b2BodyDef bd;
+    bd.position.Set(0, 0);
+    
+    body = world->CreateBody(&bd);
+    
+    b2Vec2 b2vertices[kMaxBorderVertices];
+    int nVertices = 0;
+    for (int i=0; i<nBorderVertices; i++) {
+        b2vertices[nVertices++].Set(borderVertices[i].x/PTM_RATIO,borderVertices[i].y/PTM_RATIO);
+    }
+    b2vertices[nVertices++].Set(borderVertices[nBorderVertices-1].x/PTM_RATIO,0);
+    b2vertices[nVertices++].Set(-screenW/4,0);
+    
+    /*
+    b2LoopShape shape;
+    shape.Create(b2vertices, nVertices);
+    body->CreateFixture(&shape, 0);
+     */
 }
 
 void Terrain::resetHillVertices() {
@@ -351,10 +434,12 @@ void Terrain::resetHillVertices() {
     static int prevToKeyPointI = -1;
     
     // key points interval for drawing
-    while (hillKeyPoints[fromKeyPointI+1].x < offsetX-screenW/8/getScale()) {
+    float leftSideX = offsetX-screenW/8/getScale();
+    float rightSideX = offsetX+screenW*7/8/getScale();
+    while (hillKeyPoints[fromKeyPointI+1].x < leftSideX) {
         fromKeyPointI++;
     }
-    while (hillKeyPoints[toKeyPointI].x < offsetX+screenW*7/8/getScale()) {
+    while (hillKeyPoints[toKeyPointI].x < rightSideX) {
         toKeyPointI++;
     }
     
@@ -365,7 +450,7 @@ void Terrain::resetHillVertices() {
         
         // vertices for visible area
         nHillVertices = 0;
-        nBorderVertices = 0;
+        //nBorderVertices = 0;
         CCPoint p0, p1, pt0, pt1;
         p0 = hillKeyPoints[fromKeyPointI];
         for (int i=fromKeyPointI+1; i<toKeyPointI+1; i++) {
@@ -379,16 +464,16 @@ void Terrain::resetHillVertices() {
             float ymid = (p0.y + p1.y) / 2;
             float ampl = (p0.y - p1.y) / 2;
             pt0 = p0;
-            borderVertices[nBorderVertices++] = pt0;
+            //borderVertices[nBorderVertices++] = pt0;
             for (int j=1; j<hSegments+1; j++) {
                 pt1.x = p0.x + j*dx;
                 pt1.y = ymid + ampl * cosf(da*j);
-                borderVertices[nBorderVertices++] = pt1;
+                //borderVertices[nBorderVertices++] = pt1;
                 for (int k=0; k<vSegments+1; k++) {
-                    hillVertices[nHillVertices] = CCPointMake(pt0.x, pt0.y / vSegments * k);
-                    hillTexCoords[nHillVertices++] = CCPointMake(pt0.x/(float)textureSize, 1.0f-(float)(k)/vSegments);
-                    hillVertices[nHillVertices] = CCPointMake(pt1.x, pt1.y / vSegments * k);
-                    hillTexCoords[nHillVertices++] = CCPointMake(pt1.x/(float)textureSize, 1.0f-(float)(k)/vSegments);
+                    hillVertices[nHillVertices] = ccp(pt0.x, pt0.y-(float)textureSize/vSegments*k);
+                    hillTexCoords[nHillVertices++] = ccp(pt0.x/(float)textureSize, (float)(k)/vSegments);
+                    hillVertices[nHillVertices] = ccp(pt1.x, pt1.y-(float)textureSize/vSegments*k);
+                    hillTexCoords[nHillVertices++] = ccp(pt1.x/(float)textureSize, (float)(k)/vSegments);
                 }
                 pt0 = pt1;
             }
@@ -402,7 +487,7 @@ void Terrain::resetHillVertices() {
         prevFromKeyPointI = fromKeyPointI;
         prevToKeyPointI = toKeyPointI;
         
-        resetBox2DBody();
+        //resetBox2DBody();
     }
 }
 
@@ -413,6 +498,7 @@ void Terrain::offsetChanged() {
 }
  */
 
+/*
 void Terrain::resetBox2DBody() {
     
 	if(body) {
@@ -435,6 +521,7 @@ void Terrain::resetBox2DBody() {
 		body->CreateFixture(&shape, 0);
 	}
 }
+ */
 
 void Terrain::setOffsetX(float newOffsetX) {
     //CCLog(" - customized set offset x...");

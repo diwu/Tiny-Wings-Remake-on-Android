@@ -14,7 +14,7 @@
 
 using namespace cocos2d;
 
-class Hero : public CCSprite {
+class Hero : public CCNode {
     
 public:
     b2World *world;
@@ -33,8 +33,11 @@ public:
     //void draw();
     
     CC_SYNTHESIZE_READONLY(bool, awake, Awake);
+    CC_SYNTHESIZE_RETAIN(CCSprite *, sprite, Sprite);
     
     void createBox2DBody();
+    
+    ~Hero();
 };
 
 #endif

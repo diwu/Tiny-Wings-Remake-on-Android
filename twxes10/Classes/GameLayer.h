@@ -40,13 +40,15 @@ public:
     bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent);
 	void ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent);
 
-    CCSprite * generateBackground();
+    void generateBackground();
     
     void update(ccTime dt);
     
     void createBox2DWorld();
     
     ccColor3B generateDarkColor();
+    
+    void draw();
 
 };
 
