@@ -1,3 +1,4 @@
+![Screenshot](http://pic.yupoo.com/diwup_v/BYUiqm9y/fcPez.jpg)
 #Tiny Wings Remake on Android
 * Powered by [Cocos2d-X](http://www.cocos2d-x.org/) & [Box2D](http://box2d.org/)
 * Inspired by and ported from [haqu / tiny-wings](https://github.com/haqu/tiny-wings)
@@ -17,6 +18,3 @@ The code is released under the [MIT License](http://opensource.org/licenses/mit-
 
 #Contact
 <diwufet@gmail.com>
-
-
-![Screenshot](http://pic.yupoo.com/diwup_v/BYTNJLqr/X1acu.png)
