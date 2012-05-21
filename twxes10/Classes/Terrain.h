@@ -14,7 +14,7 @@
 
 #define kMaxHillKeyPoints 1000
 #define kMaxHillVertices 2000
-#define kHillSegmentWidth 10
+#define kHillSegmentWidth 5
 #define kMaxBorderVertices 400
 
 using namespace cocos2d;
@@ -40,6 +40,8 @@ class Terrain : public cocos2d::CCNode {
     int screenW;
     int screenH;
     
+    int textureSize;
+    
 protected: float offsetX;
 public: virtual float getOffsetX(void) const { return offsetX; }
 public: virtual void setOffsetX(float var);
@@ -51,17 +53,20 @@ public:
     //bool init(void);
     ~Terrain();
     void draw(void);
-    void toggleScrolling();
+    //void toggleScrolling();
     //void update(ccTime dt);
     
     static Terrain * terrainWithWorld(b2World* w);
     bool initWithWorld(b2World* w);
     
 private:
-    void generateHills();
+    void generateHillKeyPoints();
     void resetHillVertices();
     void resetBox2DBody();
     void generateStripes();
+    ccColor3B generateDarkColor();
+    ccColor3B generateLightColorFrom(ccColor3B c);
+
 };
 
 #endif

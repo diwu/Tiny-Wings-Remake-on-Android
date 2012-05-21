@@ -33,6 +33,8 @@ public:
     //void draw();
     
     CC_SYNTHESIZE_READONLY(bool, awake, Awake);
+    
+    void createBox2DBody();
 };
 
 #endif

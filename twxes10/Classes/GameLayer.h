@@ -45,6 +45,9 @@ public:
     void update(ccTime dt);
     
     void createBox2DWorld();
+    
+    ccColor3B generateDarkColor();
+
 };
 
 #endif

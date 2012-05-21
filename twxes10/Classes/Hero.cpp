@@ -10,6 +10,32 @@
 
 #define PTM_RATIO 32 // pixel to metre ratio
 
+void Hero::createBox2DBody() {
+    
+    CCSize size = CCDirector::sharedDirector()->getWinSize();
+    int screenH = size.height;
+    
+    CCPoint startPosition = ccp(0, screenH/2+radius);
+
+    b2BodyDef bd;
+    bd.type = b2_dynamicBody;
+    bd.linearDamping = 0.1f;
+    bd.fixedRotation = true;
+    bd.position.Set(startPosition.x/PTM_RATIO, startPosition.y/PTM_RATIO);
+    body = world->CreateBody(&bd);
+    
+    b2CircleShape shape;
+    shape.m_radius = radius/PTM_RATIO;
+    
+    b2FixtureDef fd;
+    fd.shape = &shape;
+    fd.density = 1.0f;
+    fd.restitution = 0; // bounce
+    fd.friction = 0;
+    
+    body->CreateFixture(&fd);
+}
+
 Hero * Hero::heroWithWorld(b2World * w) {
     Hero *result = new Hero();
     result->initWithWorld(w);
@@ -25,6 +51,7 @@ bool Hero::initWithWorld(b2World * w) {
     radius = 16.0f;
     awake = false;
     
+    /*
     CCSize size = CCDirector::sharedDirector()->getWinSize();
     
 //    int screenW = size.width;
@@ -50,7 +77,9 @@ bool Hero::initWithWorld(b2World * w) {
     fd.friction = 0;
     
     body->CreateFixture(&fd);
+     */
     
+    createBox2DBody();
     updateNodePosition();
     sleep();
     

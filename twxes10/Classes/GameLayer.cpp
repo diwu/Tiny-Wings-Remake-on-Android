@@ -8,6 +8,19 @@
 
 #include "GameLayer.h"
 
+ccColor3B GameLayer::generateDarkColor() {
+    const int maxValue = 100;
+    const int maxSum = 250;
+    int r, g, b;
+    while (true) {
+        r = arc4random()%maxValue;
+        g = arc4random()%maxValue;
+        b = arc4random()%maxValue;
+        if (r+g+b > maxSum) break;
+    }
+    return ccc3(r, g, b);
+}
+
 void GameLayer::createBox2DWorld() {
 	
 	b2Vec2 gravity;
@@ -40,12 +53,14 @@ CCSprite * GameLayer::generateBackground() {
 	//CCSize textureSize = CCSizeMake(screenW, screenH);
     int textureSize = 512;
     
-	ccColor3B c = (ccColor3B){140,205,221};
-	
+	//ccColor3B c = (ccColor3B){140,205,221};
+	ccColor3B c = generateDarkColor();
+    ccColor4F cf = ccc4FFromccc3B(c);
+    
     //CCRenderTexture *rt = [CCRenderTexture renderTextureWithWidth:textureSize.width height:textureSize.height];
     CCRenderTexture * rt = CCRenderTexture::renderTextureWithWidthAndHeight(textureSize, textureSize);
     //[rt beginWithClear:(float)c.r/256.0f g:(float)c.g/256.0f b:(float)c.b/256.0f a:1];
-    rt->beginWithClear((float)c.r/256.0f, (float)c.g/256.0f, (float)c.b/256.0f, 1);
+    rt->beginWithClear(cf.r, cf.g, cf.b, cf.a);
     
 	// layer 1: gradient
     
@@ -87,6 +102,8 @@ CCSprite * GameLayer::generateBackground() {
     s->setBlendFunc((ccBlendFunc){GL_DST_COLOR, GL_ZERO});
 	//s.position = ccp(textureSize.width/2, textureSize.height/2);
     s->setPosition(ccp(textureSize/2, textureSize/2));
+    //s.scale = (float)textureSize/512.0f;
+    s->setScale((float)textureSize/512.0f);
     glColor4f(1,1,1,1);
 	//[s visit];
 	s->visit();
@@ -202,7 +219,7 @@ void GameLayer::update(ccTime dt) {
 	//terrain->offsetX = hero->position.x - screenW/4;
     //terrain->setOffsetX(hero->getPosition().x - screenW/4);
     
-    int32 velocityIterations = 2;
+    int32 velocityIterations = 8;
     int32 positionIterations = 1;
     world->Step(dt, velocityIterations, positionIterations);
     world->ClearForces();
