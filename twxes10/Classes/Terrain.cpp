@@ -252,10 +252,7 @@ void Terrain::generateStripes() {
     glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)nVertices);
     
     
-    glDisableClientState(GL_COLOR_ARRAY);
-
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glEnable(GL_TEXTURE_2D);	
+    glDisableClientState(GL_COLOR_ARRAY);	
     
     // layer: top border
     
@@ -275,6 +272,10 @@ void Terrain::generateStripes() {
     glDrawArrays(GL_LINE_STRIP, 0, (GLsizei)nVertices);
     
 	// layer 4: noise
+    
+    
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glEnable(GL_TEXTURE_2D);
 	
 	//CCSprite *s = [CCSprite spriteWithFile:@"noise.png"];
     CCSprite *s = CCSprite::spriteWithFile("noise.png");
@@ -421,11 +422,10 @@ void Terrain::createBox2DBody() {
     b2vertices[nVertices++].Set(borderVertices[nBorderVertices-1].x/PTM_RATIO,0);
     b2vertices[nVertices++].Set(-screenW/4,0);
     
-    /*
     b2LoopShape shape;
     shape.Create(b2vertices, nVertices);
     body->CreateFixture(&shape, 0);
-     */
+
 }
 
 void Terrain::resetHillVertices() {

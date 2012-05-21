@@ -306,7 +306,6 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 
 	// Solve position constraints
 	timer.Reset();
-	bool positionSolved = false;
 	for (int32 i = 0; i < step.positionIterations; ++i)
 	{
 		bool contactsOkay = contactSolver.SolvePositionConstraints();
@@ -321,7 +320,6 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 		if (contactsOkay && jointsOkay)
 		{
 			// Exit early if the position errors are small.
-			positionSolved = true;
 			break;
 		}
 	}
@@ -356,6 +354,12 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 				continue;
 			}
 
+			if ((b->m_flags & b2Body::e_autoSleepFlag) == 0)
+			{
+				b->m_sleepTime = 0.0f;
+				minSleepTime = 0.0f;
+			}
+
 			if ((b->m_flags & b2Body::e_autoSleepFlag) == 0 ||
 				b->m_angularVelocity * b->m_angularVelocity > angTolSqr ||
 				b2Dot(b->m_linearVelocity, b->m_linearVelocity) > linTolSqr)
@@ -370,7 +374,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 			}
 		}
 
-		if (minSleepTime >= b2_timeToSleep && positionSolved)
+		if (minSleepTime >= b2_timeToSleep)
 		{
 			for (int32 i = 0; i < m_bodyCount; ++i)
 			{
@@ -527,7 +531,6 @@ void b2Island::Report(const b2ContactVelocityConstraint* constraints)
 		const b2ContactVelocityConstraint* vc = constraints + i;
 		
 		b2ContactImpulse impulse;
-		impulse.count = vc->pointCount;
 		for (int32 j = 0; j < vc->pointCount; ++j)
 		{
 			impulse.normalImpulses[j] = vc->points[j].normalImpulse;

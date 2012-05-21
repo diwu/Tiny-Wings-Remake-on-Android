@@ -39,7 +39,7 @@ void GameLayer::createBox2DWorld() {
 	b2Vec2 gravity;
 	gravity.Set(0.0f, -9.8f);
 	
-	world = new b2World(gravity);
+	world = new b2World(gravity, false);
 	//world->SetContinuousPhysics(true);
 	
     //	debugDraw = new GLESDebugDraw(PTM_RATIO);

@@ -21,7 +21,6 @@
 #include <climits>
 #include <cstring>
 #include <memory>
-
 using namespace std;
 
 int32 b2BlockAllocator::s_blockSizes[b2_blockSizes] = 

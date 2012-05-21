@@ -27,14 +27,14 @@
 #include <Box2D/Collision/b2BroadPhase.h>
 #include <Box2D/Collision/Shapes/b2CircleShape.h>
 #include <Box2D/Collision/Shapes/b2EdgeShape.h>
-#include <Box2D/Collision/Shapes/b2ChainShape.h>
+#include <Box2D/Collision/Shapes/b2LoopShape.h>
 #include <Box2D/Collision/Shapes/b2PolygonShape.h>
 #include <Box2D/Collision/b2TimeOfImpact.h>
 #include <Box2D/Common/b2Draw.h>
 #include <Box2D/Common/b2Timer.h>
 #include <new>
 
-b2World::b2World(const b2Vec2& gravity)
+b2World::b2World(const b2Vec2& gravity, bool doSleep)
 {
 	m_destructionListener = NULL;
 	m_debugDraw = NULL;
@@ -51,7 +51,7 @@ b2World::b2World(const b2Vec2& gravity)
 
 	m_stepComplete = true;
 
-	m_allowSleep = true;
+	m_allowSleep = doSleep;
 	m_gravity = gravity;
 
 	m_flags = e_clearForces;
@@ -364,24 +364,6 @@ void b2World::DestroyJoint(b2Joint* j)
 	}
 }
 
-//
-void b2World::SetAllowSleeping(bool flag)
-{
-	if (flag == m_allowSleep)
-	{
-		return;
-	}
-
-	m_allowSleep = flag;
-	if (m_allowSleep == false)
-	{
-		for (b2Body* b = m_bodyList; b; b = b->m_next)
-		{
-			b->SetAwake(true);
-		}
-	}
-}
-
 // Find islands, integrate and solve constraints, solve position constraints
 void b2World::Solve(const b2TimeStep& step)
 {
@@ -636,15 +618,15 @@ void b2World::SolveTOI(const b2TimeStep& step)
 				b2Body* bA = fA->GetBody();
 				b2Body* bB = fB->GetBody();
 
-				b2BodyType typeA = bA->m_type;
-				b2BodyType typeB = bB->m_type;
+				b2BodyType typeA = bA->GetType();
+				b2BodyType typeB = bB->GetType();
 				b2Assert(typeA == b2_dynamicBody || typeB == b2_dynamicBody);
 
-				bool activeA = bA->IsAwake() && typeA != b2_staticBody;
-				bool activeB = bB->IsAwake() && typeB != b2_staticBody;
+				bool awakeA = bA->IsAwake() && typeA != b2_staticBody;
+				bool awakeB = bB->IsAwake() && typeB != b2_staticBody;
 
-				// Is at least one body active (awake and dynamic or kinematic)?
-				if (activeA == false && activeB == false)
+				// Is at least one body awake?
+				if (awakeA == false && awakeB == false)
 				{
 					continue;
 				}
@@ -1053,14 +1035,14 @@ void b2World::DrawShape(b2Fixture* fixture, const b2Transform& xf, const b2Color
 		}
 		break;
 
-	case b2Shape::e_chain:
+	case b2Shape::e_loop:
 		{
-			b2ChainShape* chain = (b2ChainShape*)fixture->GetShape();
-			int32 count = chain->m_count;
-			const b2Vec2* vertices = chain->m_vertices;
+			b2LoopShape* loop = (b2LoopShape*)fixture->GetShape();
+			int32 count = loop->GetCount();
+			const b2Vec2* vertices = loop->GetVertices();
 
-			b2Vec2 v1 = b2Mul(xf, vertices[0]);
-			for (int32 i = 1; i < count; ++i)
+			b2Vec2 v1 = b2Mul(xf, vertices[count - 1]);
+			for (int32 i = 0; i < count; ++i)
 			{
 				b2Vec2 v2 = b2Mul(xf, vertices[i]);
 				m_debugDraw->DrawSegment(v1, v2, color);
@@ -1085,9 +1067,6 @@ void b2World::DrawShape(b2Fixture* fixture, const b2Transform& xf, const b2Color
 			m_debugDraw->DrawSolidPolygon(vertices, vertexCount, color);
 		}
 		break;
-            
-    default:
-        break;
 	}
 }
 
@@ -1254,63 +1233,4 @@ int32 b2World::GetTreeBalance() const
 float32 b2World::GetTreeQuality() const
 {
 	return m_contactManager.m_broadPhase.GetTreeQuality();
-}
-
-void b2World::Dump()
-{
-	if ((m_flags & e_locked) == e_locked)
-	{
-		return;
-	}
-
-	b2Log("b2Vec2 g(%.15lef, %.15lef);\n", m_gravity.x, m_gravity.y);
-	b2Log("m_world->SetGravity(g);\n");
-
-	b2Log("b2Body** bodies = (b2Body**)b2Alloc(%d * sizeof(b2Body*));\n", m_bodyCount);
-	b2Log("b2Joint** joints = (b2Joint**)b2Alloc(%d * sizeof(b2Joint*));\n", m_jointCount);
-	int32 i = 0;
-	for (b2Body* b = m_bodyList; b; b = b->m_next)
-	{
-		b->m_islandIndex = i;
-		b->Dump();
-		++i;
-	}
-
-	i = 0;
-	for (b2Joint* j = m_jointList; j; j = j->m_next)
-	{
-		j->m_index = i;
-		++i;
-	}
-
-	// First pass on joints, skip gear joints.
-	for (b2Joint* j = m_jointList; j; j = j->m_next)
-	{
-		if (j->m_type == e_gearJoint)
-		{
-			continue;
-		}
-
-		b2Log("{\n");
-		j->Dump();
-		b2Log("}\n");
-	}
-
-	// Second pass on joints, only gear joints.
-	for (b2Joint* j = m_jointList; j; j = j->m_next)
-	{
-		if (j->m_type != e_gearJoint)
-		{
-			continue;
-		}
-
-		b2Log("{\n");
-		j->Dump();
-		b2Log("}\n");
-	}
-
-	b2Log("b2Free(joints);\n");
-	b2Log("b2Free(bodies);\n");
-	b2Log("joints = NULL;\n");
-	b2Log("bodies = NULL;\n");
 }

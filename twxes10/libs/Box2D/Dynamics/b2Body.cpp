@@ -112,12 +112,6 @@ b2Body::~b2Body()
 
 void b2Body::SetType(b2BodyType type)
 {
-	b2Assert(m_world->IsLocked() == false);
-	if (m_world->IsLocked() == true)
-	{
-		return;
-	}
-
 	if (m_type == type)
 	{
 		return;
@@ -131,9 +125,6 @@ void b2Body::SetType(b2BodyType type)
 	{
 		m_linearVelocity.SetZero();
 		m_angularVelocity = 0.0f;
-		m_sweep.a0 = m_sweep.a;
-		m_sweep.c0 = m_sweep.c;
-		SynchronizeFixtures();
 	}
 
 	SetAwake(true);
@@ -481,34 +472,4 @@ void b2Body::SetActive(bool flag)
 		}
 		m_contactList = NULL;
 	}
-}
-
-void b2Body::Dump()
-{
-	int32 bodyIndex = m_islandIndex;
-
-	b2Log("{\n");
-	b2Log("  b2BodyDef bd;\n");
-	b2Log("  bd.type = b2BodyType(%d);\n", m_type);
-	b2Log("  bd.position.Set(%.15lef, %.15lef);\n", m_xf.p.x, m_xf.p.y);
-	b2Log("  bd.angle = %.15lef;\n", m_sweep.a);
-	b2Log("  bd.linearVelocity.Set(%.15lef, %.15lef);\n", m_linearVelocity.x, m_linearVelocity.y);
-	b2Log("  bd.angularVelocity = %.15lef;\n", m_angularVelocity);
-	b2Log("  bd.linearDamping = %.15lef;\n", m_linearDamping);
-	b2Log("  bd.angularDamping = %.15lef;\n", m_angularDamping);
-	b2Log("  bd.allowSleep = bool(%d);\n", m_flags & e_autoSleepFlag);
-	b2Log("  bd.awake = bool(%d);\n", m_flags & e_awakeFlag);
-	b2Log("  bd.fixedRotation = bool(%d);\n", m_flags & e_fixedRotationFlag);
-	b2Log("  bd.bullet = bool(%d);\n", m_flags & e_bulletFlag);
-	b2Log("  bd.active = bool(%d);\n", m_flags & e_activeFlag);
-	b2Log("  bd.gravityScale = %.15lef;\n", m_gravityScale);
-	b2Log("  bodies[%d] = m_world->CreateBody(&bd);\n", m_islandIndex);
-	b2Log("\n");
-	for (b2Fixture* f = m_fixtureList; f; f = f->m_next)
-	{
-		b2Log("  {\n");
-		f->Dump(bodyIndex);
-		b2Log("  }\n");
-	}
-	b2Log("}\n");
 }

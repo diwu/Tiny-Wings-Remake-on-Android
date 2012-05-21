@@ -43,7 +43,8 @@ class b2World
 public:
 	/// Construct a world object.
 	/// @param gravity the world gravity vector.
-	b2World(const b2Vec2& gravity);
+	/// @param doSleep improve performance by not simulating inactive bodies.
+	b2World(const b2Vec2& gravity, bool doSleep);
 
 	/// Destruct the world. All physics entities are destroyed and all heap memory is released.
 	~b2World();
@@ -136,26 +137,18 @@ public:
 	/// Get the world contact list. With the returned contact, use b2Contact::GetNext to get
 	/// the next contact in the world list. A NULL contact indicates the end of the list.
 	/// @return the head of the world contact list.
-	/// @warning contacts are created and destroyed in the middle of a time step.
-	/// Use b2ContactListener to avoid missing contacts.
+	/// @warning contacts are 
 	b2Contact* GetContactList();
 	const b2Contact* GetContactList() const;
 
-	/// Enable/disable sleep.
-	void SetAllowSleeping(bool flag);
-	bool GetAllowSleeping() const { return m_allowSleep; }
-
 	/// Enable/disable warm starting. For testing.
 	void SetWarmStarting(bool flag) { m_warmStarting = flag; }
-	bool GetWarmStarting() const { return m_warmStarting; }
 
 	/// Enable/disable continuous physics. For testing.
 	void SetContinuousPhysics(bool flag) { m_continuousPhysics = flag; }
-	bool GetContinuousPhysics() const { return m_continuousPhysics; }
 
 	/// Enable/disable single stepped continuous physics. For testing.
 	void SetSubStepping(bool flag) { m_subStepping = flag; }
-	bool GetSubStepping() const { return m_subStepping; }
 
 	/// Get the number of broad-phase proxies.
 	int32 GetProxyCount() const;
@@ -199,10 +192,6 @@ public:
 
 	/// Get the current profile.
 	const b2Profile& GetProfile() const;
-
-	/// Dump the world into the log file.
-	/// @warning this should be called outside of a time step.
-	void Dump();
 
 private:
 

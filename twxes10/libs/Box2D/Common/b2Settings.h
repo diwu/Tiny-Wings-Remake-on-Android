@@ -44,8 +44,7 @@ typedef double float64;
 
 // Collision
 
-/// The maximum number of contact points between two convex shapes. Do
-/// not change this value.
+/// The maximum number of contact points between two convex shapes.
 #define b2_maxManifoldPoints	2
 
 /// The maximum number of vertices on a convex polygon. You cannot increase
@@ -131,9 +130,6 @@ void* b2Alloc(int32 size);
 
 /// If you implement b2Alloc, you should also implement this function.
 void b2Free(void* mem);
-
-/// Logging function.
-void b2Log(const char* string, ...);
 
 /// Version numbering scheme.
 /// See http://en.wikipedia.org/wiki/Software_versioning

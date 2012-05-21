@@ -158,10 +158,10 @@ void b2PolygonShape::Set(const b2Vec2* vertices, int32 count)
 			
 			b2Vec2 r = m_vertices[j] - m_vertices[i1];
 
-			// If this crashes, your polygon is non-convex, has colinear edges,
-			// or the winding order is wrong.
+			// Your polygon is non-convex (it has an indentation) or
+			// has colinear edges.
 			float32 s = b2Cross(edge, r);
-			b2Assert(s > 0.0f && "ERROR: Please ensure your polygon is convex and has a CCW winding order");
+			b2Assert(s > 0.0f);
 		}
 	}
 #endif
@@ -353,9 +353,6 @@ void b2PolygonShape::ComputeMass(b2MassData* massData, float32 density) const
 	center *= 1.0f / area;
 	massData->center = center + s;
 
-	// Inertia tensor relative to the local origin (point s).
-	massData->I = density * I;
-	
-	// Shift to center of mass then to original body origin.
-	massData->I += massData->mass * (b2Dot(massData->center, massData->center) - b2Dot(center, center));
+	// Inertia tensor relative to the local origin.
+	massData->I = density * I + massData->mass * b2Dot(s, s);
 }
