@@ -3,6 +3,7 @@
 * Inspired by and ported from [haqu / tiny-wings](https://github.com/haqu/tiny-wings)
 * Runs on both Android and iOS
 * Youtube demo: <http://youtu.be/4ISI_70pYGs>
+* Youku demo: <http://v.youku.com/v_show/id_XNDAwMDgyNzgw.html>
 
 #Play with It
 1. There's an .apk alongside the source code.
