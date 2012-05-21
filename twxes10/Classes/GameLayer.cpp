@@ -109,15 +109,17 @@ void GameLayer::generateBackground() {
     CCSprite *s = CCSprite::spriteWithFile("noise.png");
     
     CCSize winSize = CCDirector::sharedDirector()->getWinSize();
-    //s->setScaleX(winSize.width/s->getContentSize().width);
-    //s->setScaleY(winSize.height/s->getContentSize().height);
-
+    
 	//[s setBlendFunc:(ccBlendFunc){GL_DST_COLOR, GL_ZERO}];
     s->setBlendFunc((ccBlendFunc){GL_DST_COLOR, GL_ZERO});
 	//s.position = ccp(textureSize.width/2, textureSize.height/2);
     s->setPosition(ccp(textureSize/2, textureSize/2));
     //s.scale = (float)textureSize/512.0f;
     s->setScale((float)textureSize/512.0f);
+    
+    //s->setScaleX(winSize.width/s->getContentSize().width);
+    //s->setScaleY(winSize.height/s->getContentSize().height);
+    
     glColor4f(1,1,1,1);
 	//[s visit];
 	s->visit();
@@ -132,6 +134,9 @@ void GameLayer::generateBackground() {
     //_background.position = ccp(screenW/2,screenH/2);
     getBackground()->setPosition(ccp(screenW/2,screenH/2));
     //    _background.scale = 0.5f;
+    
+    getBackground()->setScaleX(winSize.width/getBackground()->getContentSize().width);
+    getBackground()->setScaleY(winSize.height/getBackground()->getContentSize().height);
 	
 	//return [CCSprite spriteWithTexture:rt.sprite.texture];
     //return CCSprite::spriteWithTexture(rt->getSprite()->getTexture());

@@ -68,7 +68,7 @@ LOCAL_MODULE := box2d_static
 LOCAL_MODULE_FILENAME := libbox2d
 
 LOCAL_SRC_FILES := \
-Collision/Shapes/b2ChainShape.cpp \
+Collision/Shapes/b2LoopShape.cpp \
 Collision/Shapes/b2CircleShape.cpp \
 Collision/Shapes/b2EdgeShape.cpp \
 Collision/Shapes/b2PolygonShape.cpp \
@@ -86,8 +86,8 @@ Common/b2Math.cpp \
 Common/b2Settings.cpp \
 Common/b2StackAllocator.cpp \
 Common/b2Timer.cpp \
-Dynamics/Contacts/b2ChainAndCircleContact.cpp \
-Dynamics/Contacts/b2ChainAndPolygonContact.cpp \
+Dynamics/Contacts/b2LoopAndCircleContact.cpp \
+Dynamics/Contacts/b2LoopAndPolygonContact.cpp \
 Dynamics/Contacts/b2CircleContact.cpp \
 Dynamics/Contacts/b2Contact.cpp \
 Dynamics/Contacts/b2ContactSolver.cpp \
